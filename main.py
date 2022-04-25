@@ -43,12 +43,11 @@ def send_mail_gmail():
         server.sendmail(sender_email, receiver_email, message)
 
 
-def send_mail():
+def send_mail(body):
     # Email options
     from_addr = 'brisbanecourtalert@danialvand.com'
     to_addr = 'dbdpcg@gmail.com'
     subject = 'Alert from Brisbane court'
-    body = 'A new match has been found.'
     msg = message.Message()
     msg.add_header('from', from_addr)
     msg.add_header('to', to_addr)
@@ -68,5 +67,8 @@ for table in tables:
             if isinstance(name, str):
                 if searchWord in name:
                     print("Found a match!")
-                    send_mail()
+                    send_mail('A new match has been found.')
+                else:
+                    print("No matches found!")
+                    send_mail('No matches found!')
 
