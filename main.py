@@ -15,7 +15,7 @@ from email import message
 # -----Options--------------------------------------------------------#
 #
 # Name to be searched on Brisbane court notice
-searchWord = "Mbari"
+searchWord = "Imraz"
 #
 # The address of the document to be searched
 # pdf_url = "https://www.courts.qld.gov.au/__external/CourtsLawList/BrisbaneMagCourt.pdf"
@@ -60,6 +60,8 @@ def send_mail(body):
 
 # Open the PDF from URL
 tables = read_pdf(urlopen(pdf_url), pages="all")
+# Store if a match was found
+matchFound = False
 # Looping through all tables
 for table in tables:
     if 'Matter' in table:   # Names are stored in the 'Matter' column
@@ -67,8 +69,9 @@ for table in tables:
             if isinstance(name, str):
                 if searchWord in name:
                     print("Found a match!")
+                    matchFound = True
                     send_mail('A new match has been found.')
-                else:
-                    print("No matches found!")
-                    send_mail('No matches found!')
+if not matchFound:
+    print("No matches found!")
+    send_mail('No matches found!')
 
