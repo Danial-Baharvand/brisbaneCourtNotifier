@@ -10,20 +10,21 @@ from tabula import read_pdf
 #
 # Import library for sending emails
 import smtplib, ssl
+from email import message
 #
 # -----Options--------------------------------------------------------#
 #
 # Name to be searched on Brisbane court notice
-searchWord = "Search Name"
+searchWord = "Mbari"
 #
 # The address of the document to be searched
-pdf_path = "https://www.courts.qld.gov.au/__external/CourtsLawList/BrisbaneMagCourt.pdf"
+# pdf_url = "https://www.courts.qld.gov.au/__external/CourtsLawList/BrisbaneMagCourt.pdf"
+pdf_url = "https://danialvand.com/wp-content/uploads/2022/04/namesLocal.pdf"
 #
-# Name of the saved file
-fileName = "names"
 # --------------------------------------------------------------------#
 
-def send_mail():
+
+def send_mail_gmail():
     port = 465  # For SSL
     smtp_server = "smtp.gmail.com"
     sender_email = "senderMail@gmail.com"  # Where the email is going to be sent from
@@ -42,20 +43,27 @@ def send_mail():
         server.sendmail(sender_email, receiver_email, message)
 
 
-def download_file(download_url, filename):
-    # Download a PDF file from a URL and store it on storage
-    response = urlopen(download_url)
-    file = open(filename + ".pdf", 'wb')
-    file.write(response.read())
-    file.close()
+def send_mail():
+    # Email options
+    from_addr = 'brisbanecourtalert@danialvand.com'
+    to_addr = 'dbdpcg@gmail.com'
+    subject = 'Alert from Brisbane court'
+    body = 'A new match has been found.'
+    msg = message.Message()
+    msg.add_header('from', from_addr)
+    msg.add_header('to', to_addr)
+    msg.add_header('subject', subject)
+    msg.set_payload(body)
+    server = smtplib.SMTP('smtp.dreamhost.com', 587)
+    server.login(from_addr, 'password')
+    server.send_message(msg, from_addr=from_addr, to_addrs=[to_addr])
 
 
-
-
-download_file(pdf_path, fileName)
-tables = read_pdf(fileName, pages="all")
+# Open the PDF from URL
+tables = read_pdf(urlopen(pdf_url), pages="all")
+# Looping through all tables
 for table in tables:
-    if 'Matter' in table:
+    if 'Matter' in table:   # Names are stored in the 'Matter' column
         for name in table['Matter']:
             if isinstance(name, str):
                 if searchWord in name:
