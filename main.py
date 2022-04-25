@@ -15,11 +15,11 @@ from email import message
 # -----Options--------------------------------------------------------#
 #
 # Name to be searched on Brisbane court notice
-searchWord = "Imraz"
+searchWord = "Name"
 #
 # The address of the document to be searched
-# pdf_url = "https://www.courts.qld.gov.au/__external/CourtsLawList/BrisbaneMagCourt.pdf"
-pdf_url = "https://danialvand.com/wp-content/uploads/2022/04/namesLocal.pdf"
+pdf_url = "https://www.courts.qld.gov.au/__external/CourtsLawList/BrisbaneMagCourt.pdf"
+# pdf_url = "https://danialvand.com/wp-content/uploads/2022/04/namesLocal.pdf"
 #
 # --------------------------------------------------------------------#
 
@@ -54,7 +54,7 @@ def send_mail(body):
     msg.add_header('subject', subject)
     msg.set_payload(body)
     server = smtplib.SMTP('smtp.dreamhost.com', 587)
-    server.login(from_addr, 'password')
+    server.login(from_addr, 'Password')
     server.send_message(msg, from_addr=from_addr, to_addrs=[to_addr])
 
 
